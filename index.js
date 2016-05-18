@@ -30,10 +30,36 @@ $(function() {
             $.each(students.data, function(index, student) {
                 $studentTableBody.append(studentRowView(student));
             });
-        $('.btn.btn-default').click(function() { alert($(this).parent().data('id')) });    
+            
         }
         
     });
 
+    $(document).on('click', '.student-listing-container .btn-default', function() {
+    	$studentListingContainer.fadeOut(500, function() {
+    		$studentDataContainer.fadeIn(500);
+    	});
+    	var studentId = $(this).parent().data('id');
+    	alert('student listing');
+
+	     $.get({
+	        url: 'https://spalah-js-students.herokuapp.com/students/' + studentId,
+	        contentType: "application/json",
+	        dataType: 'json',
+	        success: function(student) {
+	        	$('.student-full-name').html;
+	        	$('.student-age').html;
+	        	$('.student-at-university').html;
+	        	alert('get');
+	            }
+	            
+	        });
+	        
+	 });
     
+
+
+
 });
+
+
