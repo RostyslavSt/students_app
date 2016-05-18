@@ -40,17 +40,19 @@ $(function() {
     		$studentDataContainer.fadeIn(500);
     	});
     	var studentId = $(this).parent().data('id');
-    	alert('student listing');
+    	// alert('student listing');
 
 	     $.get({
 	        url: 'https://spalah-js-students.herokuapp.com/students/' + studentId,
 	        contentType: "application/json",
 	        dataType: 'json',
 	        success: function(student) {
-	        	$('.student-full-name').html;
-	        	$('.student-age').html;
-	        	$('.student-at-university').html;
-	        	alert('get');
+	        	$('.student-course').empty;
+	        	$('span.student-full-name').html(student.data.first_name + ' ' 
+	        		+ student.data.last_name);
+	        	$('span.student-age').html(student.data.age);
+	        	$('span.student-at-university').html('span.student-at-university' ? 'Yes' : 'No');
+	        	alert(studentId);
 	            }
 	            
 	        });
