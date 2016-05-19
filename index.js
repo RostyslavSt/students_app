@@ -38,7 +38,14 @@ $(function() {
         }
         
     });
-    // button show
+    // start button Delete
+    $(document).on('click', '.student-listing-container .btn-danger', function() {
+    	alert('delete');
+    });
+
+
+
+    // start button show
     $(document).on('click', '.student-listing-container .btn-default', function() {
     	$studentListingContainer.fadeOut(500, function() {
     		$studentDataContainer.fadeIn(500);
@@ -74,8 +81,8 @@ $(function() {
 	        	}
 	     });
 	});
-    //START button "Add Student"
-    // $('.student-listing-container .btn-success').html('3222');
+    //START move to form "Add Student"
+    
     $(document).on('click', '.student-listing-container .btn-success', function() {
     	$studentListingContainer.fadeOut(500, function() {
     		$studentFormContainer.fadeIn(500);
@@ -88,7 +95,25 @@ $(function() {
 
     }); //END button "Add Student"
    
+   //START button "Add Student"
+   $('form').submit(function(event) {	
+	var new_student = {};
+	var firstName = $('input.first-name').val();
+		new_student = ({student:
+			{
+		        first_name: $('input.first-name').val(),
+		        last_name: $('input.last-name').val(),
+		        age: $('select.student-age').val(),
+		        courses: ['JavaScript', 'Ruby'],
+		        at_university: $('input.student-at-university').val()
+			}
+		});
+	alert($('select.student-age option').val());
+	alert($('input.student-at-university').val());
 
+		// $.post('https://spalah-js-students.herokuapp.com/students', new_student);
+	});
+   //END button "Add Student"
 
 });
 
