@@ -1,7 +1,7 @@
 // Yout js code goes here
 'use strict';
-var MIN = 16;
-var MAX = 55;
+var MIN = 1;
+var MAX = 99;
 var iterator;
 $(function() {
     var $studentListingContainer = $('.student-listing-container').parent();
@@ -40,9 +40,23 @@ $(function() {
     });
     // start button Delete
     $(document).on('click', '.student-listing-container .btn-danger', function() {
-    	alert('delete');
-    });
+    	var studentId = $(this).parent().data('id');
+        alert(studentId);
+        $.ajax({
+                url: 'https://spalah-js-students.herokuapp.com/students',
+                contentType: "application/json",
+                dataType: 'json',
+                type: 'DELETE',
+                success: function() {
 
+                }
+                
+              });
+            }
+
+
+    });
+    // end button delete
 
 
     // start button show
@@ -80,38 +94,41 @@ $(function() {
 	        	createCourses(student);
 	        	}
 	     });
-	});
-    //START move to form "Add Student"
-    
+	});//END SHOW
+
+
+    //START "Add Student"
     $(document).on('click', '.student-listing-container .btn-success', function() {
     	$studentListingContainer.fadeOut(500, function() {
     		$studentFormContainer.fadeIn(500);
     	});
-    	// $('.student-form-container .student-age option').html('jjjjj');
     	for (iterator = MIN; iterator < MAX; iterator++) {
     		$('.student-form-container .student-age').append($('<option>').html(iterator));
     	}
-
-
-    }); //END button "Add Student"
-   
-   //START button "Add Student"
+    });
+     
+   //START  button "Add Student"
    $('form').submit(function(event) {	
-	var new_student = {};
-	var firstName = $('input.first-name').val();
-		new_student = ({student:
+	   var listCourses = $('input.student-course');
+       var arrayCourses = [];
+       $.each(listCourses, function(index, course){
+            arrayCourses.push(course.value);
+       });
+       console.log(arrayCourses);
+		var new_student = {student:
 			{
 		        first_name: $('input.first-name').val(),
 		        last_name: $('input.last-name').val(),
 		        age: $('select.student-age').val(),
-		        courses: ['JavaScript', 'Ruby'],
-		        at_university: $('input.student-at-university').val()
+		        courses: arrayCourses,
+		        at_university: $('input.student-at-university').is(':checked')
 			}
-		});
-	alert($('select.student-age option').val());
-	alert($('input.student-at-university').val());
+		};
 
-		// $.post('https://spalah-js-students.herokuapp.com/students', new_student);
+		$.post('https://spalah-js-students.herokuapp.com/students', new_student);
+
+        event.preventDefault();
+
 	});
    //END button "Add Student"
 
