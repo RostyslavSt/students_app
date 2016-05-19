@@ -1,5 +1,8 @@
 // Yout js code goes here
 'use strict';
+var MIN = 16;
+var MAX = 55;
+var iterator;
 $(function() {
     var $studentListingContainer = $('.student-listing-container').parent();
     var $studentDataContainer = $('.student-data-container').parent();
@@ -35,7 +38,7 @@ $(function() {
         }
         
     });
-
+    // button show
     $(document).on('click', '.student-listing-container .btn-default', function() {
     	$studentListingContainer.fadeOut(500, function() {
     		$studentDataContainer.fadeIn(500);
@@ -45,13 +48,17 @@ $(function() {
     	
     	function createCourses(student) {
     		$('.student-data-group').has('.course-group').empty();
-    		if (student.data.courses.length > 5) {
-    			alert('3434');
+    		if (student.data.courses.length > 0) {
+    			$.each(student.data.courses, function (index, course) {
+    				$('div.student-data-group:last').append($('<div>').addClass('course-group').
+    				append($('<b>').html('Course  ' + (index + 1) + ': ')).
+    				append($('<span>').html(course)));
+    			});
     		} else {
-    			// var $lastDiv = $('div.student-data-group:last');
-    			$('div.student-data-group:last').().addClass('course-group').append($('<b>')).html('22222');
-    		   }
-
+    			$('div.student-data-group:last').append($('<div>').addClass('course-group').
+    				append($('<b>').html('Courses: ')).
+    				append($('<span>').html('No courses')));
+    			}
     	}
 
 	     $.get({
@@ -64,14 +71,23 @@ $(function() {
 	        	$('span.student-age').html(student.data.age);
 	        	$('span.student-at-university').html(student.data.at_university ? 'Yes' : 'No');
 	        	createCourses(student);
-
 	        	}
-	            
-	        });
-	        
-	 });
-    
+	     });
+	});
+    //START button "Add Student"
+    // $('.student-listing-container .btn-success').html('3222');
+    $(document).on('click', '.student-listing-container .btn-success', function() {
+    	$studentListingContainer.fadeOut(500, function() {
+    		$studentFormContainer.fadeIn(500);
+    	});
+    	// $('.student-form-container .student-age option').html('jjjjj');
+    	for (iterator = MIN; iterator < MAX; iterator++) {
+    		$('.student-form-container .student-age').append($('<option>').html(iterator));
+    	}
 
+
+    }); //END button "Add Student"
+   
 
 
 });
