@@ -10,6 +10,7 @@ $(function() {
     var $studentTableBody = $('tbody');
     $studentDataContainer.hide();
     $studentFormContainer.hide();
+    $('.student-listing-container div.alert-success').hide();
     function studentRowView(student) {
         var $firstNameTd = $('<td>').html(student.first_name);
         var $lastNameTd = $('<td>').html(student.last_name);
@@ -44,9 +45,10 @@ $(function() {
     	var confirmDelete = confirm('Are you sure to delee this student?');
         if (confirmDelete) {
         	$(this).parent().parent().fadeOut(1000, function() {
-        		$('.student-listing-container div.alert-success').html('555555').fadeIn(1000);
+        		$('.student-listing-container div.alert-success').
+                            html('Student deleted successfully').fadeIn(1000);
 	        });
-        	// var cur = 
+        	
 	        $.ajax({
 	            url: 'https://spalah-js-students.herokuapp.com/students/' + studentId,
 	            contentType: "application/json",
@@ -116,14 +118,20 @@ $(function() {
     	}
     });
    //---add course---
-   function createAddCourse() {
-   		var $course = $('<div>'.addClass('form-group').append($('label').html('Course')));
-   		return $course;
-   } 
+
    $(document).on('click', 'a.add-course', function() {
-   		// $('div.form-group .student-course:last').after(($('<p>').html('erer')));
-   		$('div.form-group .student-course:last').after(($('<p>').html('erer')));
-   		alert('3333');
+   		
+        var $newDiv = $('<div>').addClass('form-group');
+        var $divLabel = $('<label>').html('Course44');
+        var $divInput = $('<input>').addClass('form-control student-course').
+                                        attr("name", "courses[]");
+        var $divAnchor = $('<a>').addClass('remove-course').html('Remove course');
+
+   		// $('form .form-group:last').insertBefore($newDiv.
+     //        append($divLabel, $divInput, $divAnchor));
+       $($newDiv.append($divLabel, $divInput,
+                    $divAnchor).insertBefore('form .form-group:last'));
+
    });
    //---add course---
    
