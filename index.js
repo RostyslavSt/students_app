@@ -41,22 +41,31 @@ $(function() {
     // start button Delete
     $(document).on('click', '.student-listing-container .btn-danger', function() {
     	var studentId = $(this).parent().data('id');
-        alert(studentId);
-        $.ajax({
-                url: 'https://spalah-js-students.herokuapp.com/students',
-                contentType: "application/json",
-                dataType: 'json',
-                type: 'DELETE',
-                success: function() {
+    	var confirmDelete = confirm('Are you sure to delee this student?');
+        if (confirmDelete) {
+        	$(this).parent().parent().fadeOut(1000, function() {
+        		$('.student-listing-container div.alert-success').html('555555').fadeIn(1000);
+	        });
+        	// var cur = 
+	        $.ajax({
+	            url: 'https://spalah-js-students.herokuapp.com/students/' + studentId,
+	            contentType: "application/json",
+	            dataType: 'json',
+	            type: 'DELETE',
+	            success: function() {
+	            	// $('tbody tr').empty();
+	            	// $('.student-listing-container div.alert-success').
+	            	// 		html('Student: ' + studentId);
+	            	// $('.student-listing-container div.alert-success').
+	            	//  		html('Student:  ' + $(this).parent().html() + 
+	            	//  			' ' + $('td:first').html() + ' was successfully deleted');
+	            } 
+	        });
+	    }
+    }); //end button delete
 
-                }
-                
-              });
-            }
-
-
-    });
-    // end button delete
+    
+    
 
 
     // start button show
@@ -106,8 +115,18 @@ $(function() {
     		$('.student-form-container .student-age').append($('<option>').html(iterator));
     	}
     });
-     
-   //START  button "Add Student"
+   //---add course---
+   function createAddCourse() {
+   		var $course = $('<div>'.addClass('form-group').append($('label').html('Course')));
+   		return $course;
+   } 
+   $(document).on('click', 'a.add-course', function() {
+   		// $('div.form-group .student-course:last').after(($('<p>').html('erer')));
+   		$('div.form-group .student-course:last').after(($('<p>').html('erer')));
+   		alert('3333');
+   });
+   //---add course---
+   
    $('form').submit(function(event) {	
 	   var listCourses = $('input.student-course');
        var arrayCourses = [];
