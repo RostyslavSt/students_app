@@ -4,6 +4,7 @@ var MIN = 1;
 var MAX = 99;
 var iterator;
 var courseNumber = 3;
+
 $(function() {
     var $studentListingContainer = $('.student-listing-container').parent();
     var $studentDataContainer = $('.student-data-container').parent();
@@ -44,10 +45,13 @@ $(function() {
 		$studentListingContainer.fadeOut(500, function() {
 	    $studentFormContainer.fadeIn();
     	});
-
-    	$('div.alert-danger').remove();
+		
+		$('select.student-age').empty();
+		$('select.student-age').append($('<option>').html('Select age'));
+    	$('div.alert-danger').hide();
     	
     	var studentId = $(this).parent().data('id');
+
     	$('input.student-course').parent().remove(); //remove field courses to create once more
     	function downloadCourses(course) {
     		var courseNumber = 1;
@@ -96,11 +100,9 @@ $(function() {
     $(document).on('click', '.student-listing-container .btn-danger', function() {
     	var studentId = $(this).parent().data('id');
     	var confirmDelete = confirm('Are you sure to delee this student?');
+    	$('.student-listing-container div.alert-success').hide();
         if (confirmDelete) {
-        	$(this).parent().parent().fadeOut(500, function() {
-        			$('.student-listing-container div.alert-success').
-                            html('Student deleted successfully').fadeIn(500);
-	        				});
+        	$(this).parent().parent().fadeOut(1000);
         	    	
 	        $.ajax({
 	            url: 'https://spalah-js-students.herokuapp.com/students/' + studentId,
@@ -112,9 +114,10 @@ $(function() {
 	            } 
 	        });
 	    }
+	    event.preventDefault();
     }); // button delete >
 
-       // < START BUTTON SHOW
+       // < BUTTON SHOW
     $(document).on('click', '.student-listing-container .btn-default', function() {
     	$studentListingContainer.fadeOut(500, function() {
     		$studentDataContainer.fadeIn(500);
@@ -152,27 +155,87 @@ $(function() {
 	        	createCourses(student);
 	        	}
 	     });
-
 	});//END BUTTON SHOW >
+	
+    
+    // < button "EDIT" on studentForm
+	$(document).on('click', '.student-data-container a.btn-primary', function() {
+		// alert('djksj');
+		$studentDataContainer.fadeOut(500, function() {
+	    $studentFormContainer.fadeIn();
+    	});
+
+    	$('div.alert-danger').hide();
+    	
+    	// var studentId = $(this).parent().data('id');
+    	alert(studentId);
+    	$('input.student-course').parent().remove(); //remove field courses to create once more
+    	function downloadCourses(course) {
+    		var courseNumber = 1;
+    		var $newDiv = $('<div>').addClass('form-group');
+	        var $divLabel = $('<label>').html('Course ' + courseNumber);
+	        var $divInput = $('<input>').addClass('form-control student-course').
+	                                        attr("name", "courses[]").
+	                                        	val(course);
+	        var $divAnchor = $('<a>').addClass('remove-course').attr('href', '#').
+	        							html('Remove course');
+	       $($newDiv.append($divLabel, $divInput,
+	                    $divAnchor).insertBefore('form .form-group:last'));
+	       courseNumber++;
+    	}
+
+    	$.get({
+    		url: 'https://spalah-js-students.herokuapp.com/students/' + studentId,
+    		contentType: 'application/json',
+    		dataType: 'json',
+    		success: function(student) {
+
+    			
+				
+
+    			$('input.first-name').val(student.data.first_name);
+    			$('input.last-name').val(student.data.last_name);
+    			var newAge = $('select.student-age');
+    			for (iterator = MIN; iterator <= MAX; iterator++) {
+    					if (iterator === student.data.age) {
+    						newAge.append($('<option>').html(iterator).
+    						attr('selected', 'selected'));
+    					} else {newAge.append($('<option>').html(iterator));}
+    					
+    			}
+    			if (student.data.at_university) {
+    				$('input.student-at-university').attr('checked', '');
+    				// alert(student.data.at_university);
+    			}
+    			$.each(student.data.courses, function(index, course){
+    				downloadCourses(course);
+    			});
+    		}
+    	});
+   
+	});
+	// button "EDIT" on studentForm >
+
+	
 
     // < button BACK for SHOW---
-		  	$(document).on('click', 'div.student-data-container a.btn-default', function() {
-		  		$studentTableBody.empty();
-		  		$studentDataContainer.fadeOut(500, function() {
-		  			$studentListingContainer.fadeIn(500);
-		  		});
+  	$(document).on('click', 'div.student-data-container a.btn-default', function() {
+  		$studentTableBody.empty();
+  		$studentDataContainer.fadeOut(500, function() {
+  			$studentListingContainer.fadeIn(500);
+  		});
 
-		  		$.get({
-		        url: 'https://spalah-js-students.herokuapp.com/students',
-		        contentType: "application/json",
-		        dataType: 'json',
-			        success: function(students) {
-			            $.each(students.data, function(index, student) {
-			                $studentTableBody.append(studentRowView(student));
-			            });
-			        }
-		    	});
-			});
+  		$.get({
+        url: 'https://spalah-js-students.herokuapp.com/students',
+        contentType: "application/json",
+        dataType: 'json',
+	        success: function(students) {
+	            $.each(students.data, function(index, student) {
+	                $studentTableBody.append(studentRowView(student));
+	            });
+	        }
+    	});
+	});
 	// ----button BACK for SHOW >
 
     // < "Add Student"
@@ -181,8 +244,11 @@ $(function() {
     	$studentListingContainer.fadeOut(500, function() {
     		$studentFormContainer.fadeIn(500);
     	});
+    	
+    	
+
     	// $studentFormContainer.empty();
-    	$('div.alert-danger').remove();
+    	$('div.alert-danger').hide();
     	for (iterator = MIN; iterator < MAX; iterator++) {
     		$('.student-form-container .student-age').append($('<option>').html(iterator));
     	} //create a list of age
@@ -197,8 +263,7 @@ $(function() {
        $.each(listCourses, function(index, course){
             arrayCourses.push(course.value);
        });
-       // console.log(arrayCourses);
-		var new_student = {student:
+       var new_student = {student:
 			{
 		        first_name: $('input.first-name').val(),
 		        last_name: $('input.last-name').val(),
@@ -212,10 +277,10 @@ $(function() {
 			new_student,
 			function(data) {
 				if (data.errors) {
-                    $('.alert-danger').fadeIn(500);
+					$('div.alert-danger li.list-group-item').remove();
+                    $('.alert-danger').fadeIn(1500);
                     $.each(data.errors, function(index, error) {
-                    	console.log(error);
-                        var $error_li = $('<li>').addClass('list-group-item').text(error);
+                    	var $error_li = $('<li>').addClass('list-group-item').html(error);
                         $('ul').append($error_li);
                     });
                 } else {
