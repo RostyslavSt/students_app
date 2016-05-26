@@ -24,6 +24,7 @@ $(function() {
     function clearFormStudent() {
         // $('label').val();
         // $('form').removeData('id');
+        $('div.alert-danger li.list-group-item').remove();
         $('div.student-form-container input').val('');
         $('input.student-at-university').removeAttr('checked');
         $('select.student-age').empty();
@@ -92,7 +93,7 @@ $(function() {
     					} else {newAge.append($('<option>').html(iterator));}
     			}
     			if (student.data.at_university) {
-    				$('input.student-at-university').attr('checked', '');
+    				$('input.student-at-university').attr('checked', 'checked');
     			}
     			$.each(student.data.courses, function(index, course){
     				downloadCourses(course, index);
@@ -132,18 +133,26 @@ $(function() {
 
 	//< button EDIT on list student
 	$(document).on('click', '.student-listing-container .btn-primary', function() {
-
+		var studentId = $(this).parent().data('id');
+		$('form').data('id', studentId);
 		clearFormStudent();
 		$studentListingContainer.fadeOut(500, function() {
 	    $studentFormContainer.fadeIn();
     	});
-		
-		var studentId = $(this).parent().data('id');
-		$('form').data('id', studentId);
 		getFromServer(studentId);
     });
     // button EDIT on list student >
 
+     // < button "EDIT" on studentData
+	$(document).on('click', '.student-data-container a.btn-primary', function() {
+		clearFormStudent();
+		$studentDataContainer.fadeOut(500, function() {
+	    $studentFormContainer.fadeIn();
+    	});
+    	var studentId = $(this).parent().data('id');
+        getFromServer(studentId);
+   	});
+	// button "EDIT" on studentData >
 
     // < button Delete
     $(document).on('click', '.student-listing-container .btn-danger', function() {
@@ -205,16 +214,7 @@ $(function() {
 	     });
 	});//END BUTTON SHOW >
 	    
-    // < button "EDIT" on studentData
-	$(document).on('click', '.student-data-container a.btn-primary', function() {
-		clearFormStudent();
-		$studentDataContainer.fadeOut(500, function() {
-	    $studentFormContainer.fadeIn();
-    	});
-    	var studentId = $(this).parent().data('id');
-        getFromServer(studentId);
-   	});
-	// button "EDIT" on studentData >
+   
 
     // < button BACK for SHOW---
   	$(document).on('click', 'div.student-data-container a.btn-default', function() {
