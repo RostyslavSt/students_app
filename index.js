@@ -227,8 +227,6 @@ $(function() {
     	
 	});//END BUTTON SHOW >
 	    
-   
-
     // < button BACK for SHOW---
   	$(document).on('click', 'div.student-data-container a.btn-default', function() {
   		$studentTableBody.empty();
