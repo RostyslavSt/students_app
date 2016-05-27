@@ -3,7 +3,7 @@
 var MIN = 1;
 var MAX = 99;
 var iterator;
-var courseNumber = 3;
+var courseNumber;
 
 $(function() {
     var $studentListingContainer = $('.student-listing-container').parent();
@@ -13,6 +13,15 @@ $(function() {
     $studentDataContainer.hide();
     $studentFormContainer.hide();
     $('.student-listing-container div.alert-success').hide();
+   
+    function showErrorsFromServer(errors) {
+      $('div.alert-danger li.list-group-item').remove();
+      $('.alert-danger').fadeIn(1500);
+      $.each(errors, function(index, error) {
+          var $error_li = $('<li>').addClass('list-group-item').html(error);
+          $('ul').append($error_li);
+      });
+    }
     function renumberCourses() {
     	var quantityCourses = $('.remove-course').parent().find('label').length;
     	var courseNumber = 1;
@@ -130,6 +139,20 @@ $(function() {
                 $studentTableBody.append(studentRowView(student));
             });
     }
+    function requestToServerForStudentData(studentId) {
+      $.get({
+          url: 'https://spalah-js-students.herokuapp.com/students/' + studentId,
+          contentType: "application/json",
+          dataType: 'json',
+          success: function(student) {
+            $('span.student-full-name').html(student.data.first_name + ' ' 
+              + student.data.last_name);
+            $('span.student-age').html(student.data.age);
+            $('span.student-at-university').html(student.data.at_university ? 'Yes' : 'No');
+            createCourses(student);
+            }
+       });
+    }
     
     $studentTableBody.empty();
     $.get({
@@ -199,19 +222,9 @@ $(function() {
     	// $('div.student-data-container').data('id', 0);
     	$('div.student-data-container').data('id', studentId);
     	$('div.student-data-group span').empty();
-    	console.log(studentId);
-    	$.get({
-	        url: 'https://spalah-js-students.herokuapp.com/students/' + studentId,
-	        contentType: "application/json",
-	        dataType: 'json',
-	        success: function(student) {
-	        	$('span.student-full-name').html(student.data.first_name + ' ' 
-	        		+ student.data.last_name);
-	        	$('span.student-age').html(student.data.age);
-	        	$('span.student-at-university').html(student.data.at_university ? 'Yes' : 'No');
-	        	createCourses(student);
-	        	}
-	     });
+    	// console.log(studentId);
+      requestToServerForStudentData(studentId);
+    	
 	});//END BUTTON SHOW >
 	    
    
@@ -223,6 +236,7 @@ $(function() {
   			$studentListingContainer.fadeIn(500);
   		});
   		back();
+      $('form').removeData('id')
   	});
 	// ----button BACK for SHOW >
 
@@ -265,32 +279,15 @@ $(function() {
             // contentType: 'application/json',
   			    success: function(data) {
   	                if (data.errors) {
-  	                    $('div.alert-danger li.list-group-item').remove();
-  	                    $('.alert-danger').fadeIn(1500);
-  	                    $.each(data.errors, function(index, error) {
-  	                        var $error_li = $('<li>').addClass('list-group-item').html(error);
-  	                        $('ul').append($error_li);
-  	                    });
-  	                } 
-                      else {
+  	                    showErrorsFromServer(data.errors);
+                    } else {
                         $studentFormContainer.fadeOut(500, function() {
                           $studentDataContainer.fadeIn(500);
                         });
                         $('.student-data-container div.alert-success').fadeIn(500);
 
                         $('div.student-data-group span').empty();
-                        $.get({
-                            url: 'https://spalah-js-students.herokuapp.com/students/' + currentId,
-                            contentType: "application/json",
-                            dataType: 'json',
-                            success: function(student) {
-                              $('span.student-full-name').html(student.data.first_name + ' ' 
-                                + student.data.last_name);
-                              $('span.student-age').html(student.data.age);
-                              $('span.student-at-university').html(student.data.at_university ? 'Yes' : 'No');
-                              createCourses(student);
-                              }
-                         });
+                        requestToServerForStudentData(currentId);
                       }
   	              }
 			     });
@@ -299,13 +296,8 @@ $(function() {
       				newStudent,
       				function(data) {
       					if (data.errors) {
-      						$('div.alert-danger li.list-group-item').remove();
-      	                    $('.alert-danger').fadeIn(1500);
-      	                    $.each(data.errors, function(index, error) {
-      	                    	var $error_li = $('<li>').addClass('list-group-item').html(error);
-      	                        $('ul').append($error_li);
-      	                    });
-      	                } else {
+                  showErrorsFromServer(data.errors);
+      						    } else {
                 	           $studentFormContainer.fadeOut(500, function() {
                 			  			$studentListingContainer.fadeIn(500);
                 					  		});
@@ -346,21 +338,24 @@ $(function() {
    
    		// < remove course---
    $(document).on('click','form .remove-course', function() {
-   	$(this).parent().fadeOut(1000);
-   	$(this).remove();
-   	renumberCourses();
+   	$(this).parent().fadeOut(500, function () {
+      $(this).remove();
+      renumberCourses();
+    });
+   	 
    	event.preventDefault();
    });
   		//---remove course >
 
-  		// <----button BACK---
+  		// <----button BACK on FormContainer---
   	$(document).on('click', 'a.btn-default:last', function() {
   		$studentFormContainer.fadeOut(500, function() {
   			$studentListingContainer.fadeIn(500);
   		});
   		back();
+      $('form').removeData('id')
 	});
-  		// ----button BACK--->
+  		// ----button BACK on FormContainer--->
 
 
    
