@@ -1,4 +1,5 @@
 // Yout js code goes here
+// using mustache
 'use strict';
 var MIN = 1;
 var MAX = 99;
@@ -54,7 +55,7 @@ $(function() {
 	    		$studentFormContainer.fadeIn(500);
 	    	});
     	}
-        // $.each($('.remove-course').parent());
+        
     }
     function back() {
     	$studentTableBody.empty();
