@@ -122,18 +122,19 @@ $(function() {
         } 
     }
     function studentRowView(student) {
-        var $firstNameTd = $('<td>').html(student.first_name);
-        var $lastNameTd = $('<td>').html(student.last_name);
-        var $studentShowAnchor = $('<a>').html('Show').addClass('btn btn-default')
-                                                                 .attr('href', '#');
-        var $studentEditAnchor = $('<a>').html('Edit').addClass('btn btn-primary')
-                                                                 .attr('href', '#');
-        var $studentDeleteAnchor = $('<a>').html('Delete').addClass('btn btn-danger')
-                                                                 .attr('href', '#');
+     return Mustache.render(STUDENT_ROW_VIEW, student);
+        // var $firstNameTd = $('<td>').html(student.first_name);
+        // var $lastNameTd = $('<td>').html(student.last_name);
+        // var $studentShowAnchor = $('<a>').html('Show').addClass('btn btn-default')
+        //                                                          .attr('href', '#');
+        // var $studentEditAnchor = $('<a>').html('Edit').addClass('btn btn-primary')
+        //                                                          .attr('href', '#');
+        // var $studentDeleteAnchor = $('<a>').html('Delete').addClass('btn btn-danger')
+        //                                                          .attr('href', '#');
 
-        var $actionsTd = $('<td>').data('id', student.id).
-        			append($studentShowAnchor, $studentEditAnchor, $studentDeleteAnchor);
-        return $('<tr>').append($firstNameTd, $lastNameTd, $actionsTd);
+        // var $actionsTd = $('<td>').data('id', student.id).
+        // 			append($studentShowAnchor, $studentEditAnchor, $studentDeleteAnchor);
+        // return $('<tr>').append($firstNameTd, $lastNameTd, $actionsTd);
     }
     function createStudentsListing(students) {
     	$.each(students.data, function(index, student) {
