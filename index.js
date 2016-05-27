@@ -261,10 +261,8 @@ $(function() {
         	$.ajax({
   			    url: 'https://spalah-js-students.herokuapp.com/'+ student,
   			    type: 'PUT',
-  			    data:     {student:{first_name: 'Topol'}},
-
-           // newStudent,
-  			    contentType: 'application/json',
+  			    data: newStudent,
+            // contentType: 'application/json',
   			    success: function(data) {
   	                if (data.errors) {
   	                    $('div.alert-danger li.list-group-item').remove();
@@ -273,10 +271,13 @@ $(function() {
   	                        var $error_li = $('<li>').addClass('list-group-item').html(error);
   	                        $('ul').append($error_li);
   	                    });
-  	                } else {
-                        $studentListingContainer.fadeOut(500, function() {
+  	                } 
+                      else {
+                        $studentFormContainer.fadeOut(500, function() {
                           $studentDataContainer.fadeIn(500);
                         });
+                        $('.student-data-container div.alert-success').fadeIn(500);
+
                         $('div.student-data-group span').empty();
                         $.get({
                             url: 'https://spalah-js-students.herokuapp.com/students/' + currentId,
@@ -322,7 +323,7 @@ $(function() {
       	        }
             );
       	  }
-	  // $('form').removeData('id'); // clear form id
+	  $('form').removeData('id'); // clear form id
 	  event.preventDefault();
 	});
    // push push SUBMIT >
