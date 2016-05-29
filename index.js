@@ -114,27 +114,24 @@ $(function() {
     function createCourses(student) {
         $('.student-data-group').has('.course-group').empty();
         if (student.data.courses.length > 0) {
+
+          // Mustache.render(NEW_COURSEE, student.data.courses);
+
           $.each(student.data.courses, function (index, course) {
-            $('div.student-data-group:last').append($('<div>').addClass('course-group').
-            append($('<b>').html('Course  ' + (index + 1) + ': ')).
-            append($('<span>').html(course)));
+            var objForMustache = {ind: index, cour: course};
+            objForMustache.ind = index + 1;
+            objForMustache.cour = course;
+            var $newCourse = Mustache.render(NEW_COURSE, objForMustache);
+            $('div.student-data-group:last').append($newCourse);
+
+            // $('div.student-data-group:last').append($('<div>').addClass('course-group').
+            // append($('<b>').html('Course  ' + (index + 1) + ': ')).
+            // append($('<span>').html(course)));
           });
         } 
     }
     function studentRowView(student) {
      return Mustache.render(STUDENT_ROW_VIEW, student);
-        // var $firstNameTd = $('<td>').html(student.first_name);
-        // var $lastNameTd = $('<td>').html(student.last_name);
-        // var $studentShowAnchor = $('<a>').html('Show').addClass('btn btn-default')
-        //                                                          .attr('href', '#');
-        // var $studentEditAnchor = $('<a>').html('Edit').addClass('btn btn-primary')
-        //                                                          .attr('href', '#');
-        // var $studentDeleteAnchor = $('<a>').html('Delete').addClass('btn btn-danger')
-        //                                                          .attr('href', '#');
-
-        // var $actionsTd = $('<td>').data('id', student.id).
-        // 			append($studentShowAnchor, $studentEditAnchor, $studentDeleteAnchor);
-        // return $('<tr>').append($firstNameTd, $lastNameTd, $actionsTd);
     }
     function createStudentsListing(students) {
     	$.each(students.data, function(index, student) {
@@ -322,15 +319,9 @@ $(function() {
 
    // < add course---
    $(document).on('click', 'a.add-course', function() {
-   		// var courseNumber = 3;
-        var $newDiv = $('<div>').addClass('form-group');
-        var $divLabel = $('<label>').html('Course ' + courseNumber);
-        var $divInput = $('<input>').addClass('form-control student-course').
-                                        attr("name", "courses[]");
-        var $divAnchor = $('<a>').addClass('remove-course').attr('href', '#').
-        							html('Remove course');
-       $($newDiv.append($divLabel, $divInput,
-                    $divAnchor).insertBefore('form .form-group:last'));
+   		 var $addNewCourse = Mustache.render(ADD_COURSE);
+       $('form .form-group:last').append($addNewCourse);
+       $addNewCourse.insertBefore('form .form-group:last');
        renumberCourses();
        event.preventDefault();
    });
