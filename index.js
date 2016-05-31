@@ -37,6 +37,7 @@ $(function() {
         $('div.alert-danger li.list-group-item').remove();
         $('div.student-form-container input').val('');
         $('input.student-at-university').removeAttr('checked');
+        $('input.student-at-university').prop( "checked", false);
         $('select.student-age').empty();
         $('select.student-age').append($('<option>').html('Select age'));
         $('.student-form-container .remove-course').parent().remove();
@@ -103,7 +104,8 @@ $(function() {
     			}
     			
           if (student.data.at_university) {
-    				$('input.student-at-university').attr('checked', true);
+    				$('input.student-at-university').attr('checked', 'checked');
+            $('input.student-at-university').prop('checked', true);
     			} 
     			$.each(student.data.courses, function(index, course){
     				downloadCourses(course, index);
