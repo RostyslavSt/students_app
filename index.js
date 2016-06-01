@@ -1,5 +1,5 @@
 // Yout js code goes here
-// using mustache branch
+// using require branch
 'use strict';
 var MIN = 1;
 var MAX = 99;
