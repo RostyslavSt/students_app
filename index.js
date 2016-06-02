@@ -322,8 +322,7 @@ $(function() {
    // < add course---
    $(document).on('click', 'a.add-course', function() {
    		 var $addNewCourse = Mustache.render(ADD_COURSE);
-       $('form .form-group:last').append($addNewCourse);
-       $addNewCourse.insertBefore('form .form-group:last');
+       $($addNewCourse).insertBefore('form .form-group:last');
        renumberCourses();
        event.preventDefault();
    });
