@@ -147,7 +147,7 @@ requirejs(['jquery', 'lodash', 'mustache',
           } 
       }
       function studentRowView(student) {
-       return Mustache.render(studentView.rowView, student);
+       return Mustache.render(studentViews.rowView, student);
       }
       function createStudentsListing(students) {
       	$.each(students.data, function(index, student) {
