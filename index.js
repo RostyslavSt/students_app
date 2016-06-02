@@ -147,7 +147,7 @@ requirejs(['jquery', 'lodash', 'mustache',
           } 
       }
       function studentRowView(student) {
-       return Mustache.render(STUDENT_ROW_VIEW, student);
+       return Mustache.render(studentView.rowView, student);
       }
       function createStudentsListing(students) {
       	$.each(students.data, function(index, student) {
@@ -364,5 +364,5 @@ requirejs(['jquery', 'lodash', 'mustache',
   	});
     		// ----button BACK on FormContainer--->
   });
-}
+});
 
