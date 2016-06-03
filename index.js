@@ -154,16 +154,47 @@ $(function() {
             }
        });
     }
-    
+
+    //< show studentListing
     $studentTableBody.empty();
+    var studentSequence = JSON.parse(localStorage.getItem('studentSequence'));
+    // < sortable
     $.get({
-        url: 'https://spalah-js-students.herokuapp.com/students',
-        contentType: "application/json",
-        dataType: 'json',
-        success: function(students) {
-            createStudentsListing(students);
-        }
+            url: 'https://spalah-js-students.herokuapp.com/students',
+            contentType: "application/json",
+            dataType: 'json',
+            success: function(students) {
+               $.each(studentSequence, function(index, id) {
+                          $.each(students.data, function(index, student) {
+                              if (student.id === id) $studentTableBody.append(studentRowView(student));
+                          });
+                      });
+            }
     });
+     // sortable >
+    $studentTableBody.sortable({
+      deactivate: function(event, ui) {
+          var studentSequence = []
+          $.each($('tbody tr td:last-child'), function(index, td) {
+              studentSequence.push($(td).data('id'));
+          });
+          localStorage.setItem('studentSequence', JSON.stringify(studentSequence));
+      }
+    });
+    //show studentListing >
+
+
+
+    
+    // $studentTableBody.empty();
+    // $.get({
+    //     url: 'https://spalah-js-students.herokuapp.com/students',
+    //     contentType: "application/json",
+    //     dataType: 'json',
+    //     success: function(students) {
+    //         createStudentsListing(students);
+    //     }
+    // });
 
 	//< button EDIT on list student
 	$(document).on('click', '.student-listing-container .btn-primary', function() {
