@@ -155,7 +155,7 @@ $(function() {
             }
        });
     }
-    //show studentListing
+    //< show studentListing
     $studentTableBody.empty();
     var studentSequence = JSON.parse(localStorage.getItem('studentSequence'));
     // < sortable
@@ -164,36 +164,26 @@ $(function() {
             contentType: "application/json",
             dataType: 'json',
             success: function(students) {
-
-                $.each(students.data, function(index, student) {
-                  $studentTableBody.append(studentRowView(student));
-              });
-
-
+               $.each(studentSequence, function(index, id) {
+                          $.each(students.data, function(index, student) {
+                              if (student.id === id) $studentTableBody.append(studentRowView(student));
+                          });
+                      });
             }
-        });
-        
-        $studentTableBody.sortable({
-        deactivate: function(event, ui) {
-            var studentSequence = []
-            $.each($('tbody tr td:last-child'), function(index, td) {
-                studentSequence.push($(td).data('id'));
-            });
-            localStorage.setItem('studentSequence', JSON.stringify(studentSequence));
-        }
     });
-        //sortable >
+     // sortable >
+    $studentTableBody.sortable({
+      deactivate: function(event, ui) {
+          var studentSequence = []
+          $.each($('tbody tr td:last-child'), function(index, td) {
+              studentSequence.push($(td).data('id'));
+          });
+          localStorage.setItem('studentSequence', JSON.stringify(studentSequence));
+      }
+    });
+    //show studentListing >
 
-    // $.get({
-    //     url: 'https://spalah-js-students.herokuapp.com/students',
-    //     contentType: "application/json",
-    //     dataType: 'json',
-    //     success: function(students) {
-    //         createStudentsListing(students);
-    //     }
-    // });
-
-	//< button EDIT on list student
+    //< button EDIT on list student
 	$(document).on('click', '.student-listing-container .btn-primary', function() {
 		var studentId = $(this).parent().data('id');
 		$('form').data('id', studentId);
