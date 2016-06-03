@@ -137,7 +137,7 @@ requirejs(['jquery', 'lodash', 'mustache',
               var objForMustache = {ind: index, cour: course};
               objForMustache.ind = index + 1;
               objForMustache.cour = course;
-              var $newCourse = Mustache.render(NEW_COURSE, objForMustache);
+              var $newCourse = Mustache.render(studentViews.addCourse, objForMustache);
               $('div.student-data-group:last').append($newCourse);
 
               // $('div.student-data-group:last').append($('<div>').addClass('course-group').
@@ -353,7 +353,7 @@ requirejs(['jquery', 'lodash', 'mustache',
 
      // < add course---
      $(document).on('click', 'a.add-course', function() {
-     		 var $addNewCourse = Mustache.render(ADD_COURSE);
+     		 var $addNewCourse = Mustache.render(studentViews.addCourse);
          $('form .form-group:last').append($addNewCourse);
          $addNewCourse.insertBefore('form .form-group:last');
          renumberCourses();
