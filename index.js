@@ -137,7 +137,7 @@ requirejs(['jquery', 'lodash', 'mustache',
               var objForMustache = {ind: index, cour: course};
               objForMustache.ind = index + 1;
               objForMustache.cour = course;
-              var $newCourse = Mustache.render(studentViews.addCourse, objForMustache);
+              // var $newCourse = Mustache.render(studentViews.newCourse, objForMustache);
               $('div.student-data-group:last').append($newCourse);
 
               // $('div.student-data-group:last').append($('<div>').addClass('course-group').

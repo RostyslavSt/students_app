@@ -25,3 +25,14 @@ define(function() {
    `
   };
 });
+
+define(function() {
+  return {
+    newCourse: `
+    <div class="course-group">
+      <b>Course {{ind}} : </b>
+      <span class='student-course'>{{cour}}</span>
+    </div>
+    `
+  }
+});
