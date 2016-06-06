@@ -130,14 +130,11 @@ requirejs(['jquery', 'lodash', 'mustache',
       function createCourses(student) {
           $('.student-data-group').has('.course-group').empty();
           if (student.data.courses.length > 0) {
-
-            // Mustache.render(NEW_COURSEE, student.data.courses);
-
             $.each(student.data.courses, function (index, course) {
               var objForMustache = {ind: index, cour: course};
               objForMustache.ind = index + 1;
               objForMustache.cour = course;
-              // var $newCourse = Mustache.render(studentViews.newCourse, objForMustache);
+              var $newCourse = Mustache.render(studentViews.newCourse, objForMustache);
               $('div.student-data-group:last').append($newCourse);
 
               // $('div.student-data-group:last').append($('<div>').addClass('course-group').
@@ -354,8 +351,8 @@ requirejs(['jquery', 'lodash', 'mustache',
      // < add course---
      $(document).on('click', 'a.add-course', function() {
      		 var $addNewCourse = Mustache.render(studentViews.addCourse);
-         $('form .form-group:last').append($addNewCourse);
-         $addNewCourse.insertBefore('form .form-group:last');
+         // $('form .form-group:last').append($addNewCourse);
+         $($addNewCourse).insertBefore('form .form-group:last');
          renumberCourses();
          event.preventDefault();
      });

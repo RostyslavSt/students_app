@@ -10,29 +10,20 @@ define(function() {
                 <a href="#" class="btn btn-danger">Delete</a>
               </td>
             </tr>
+        `,
+        addCourse: `
+        <div class='form-group'>
+          <label>Course 1:</label>
+          <input name='courses[]' class='form-control student-course'>
+          <a href='#' class='remove-course'>Remove course</a>
+          </div>
+        `,
+        newCourse:  `
+        <div class="course-group">
+          <b>Course {{ind}} : </b>
+          <span class='student-course'>{{cour}}</span>
+        </div>
         `
     };
 });
 
-define(function() {
-  return {
-    addCourse: `
-    <div class='form-group'>
-      <label>Course 1:</label>
-      <input name='courses[]' class='form-control student-course'>
-      <a href='#' class='remove-course'>Remove course</a>
-    </div>
-   `
-  };
-});
-
-define(function() {
-  return {
-    newCourse: `
-    <div class="course-group">
-      <b>Course {{ind}} : </b>
-      <span class='student-course'>{{cour}}</span>
-    </div>
-    `
-  }
-});
