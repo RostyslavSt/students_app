@@ -23,7 +23,7 @@ var	NEW_COURSE = `
 	<b>Course {{ind}} : </b>
 	<span class='student-course'>{{cour}}</span>
 </div>
-`
+`;
 
 var	NEW_COURSEE = `
 {{#courses}}
@@ -32,4 +32,4 @@ var	NEW_COURSEE = `
 		<span class='student-course'>{{.}}</span>
 	</div>
 {{/courses}}
-`
+`;
